@@ -3,16 +3,201 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#B22222">
     <title>El Lobo Entrenador</title>
     <link rel="stylesheet" href="style.css">
     <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icon-192.png">
 </head>
 <body>
-    <div id="app">
-        <h1>El Lobo Entrenador</h1>
-        <p>Bienvenido. Configura tu perfil para empezar.</p>
-        <button onclick="alert('Funcionalidad de carga de perfil en desarrollo')">Comenzar Perfil</button>
+    <div id="app-container">
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="logo-box">
+                <span class="wolf-logo">🐺</span>
+                <div>
+                    <h1 class="app-title">EL LOBO</h1>
+                    <p class="app-subtitle">ENTRENADOR PERSONAL</p>
+                </div>
+            </div>
+            <div id="header-streak" class="streak-badge">🔥 <span id="streak-count">0</span> días</div>
+        </header>
+
+        <!-- MAIN CONTENT AREA -->
+        <main id="main-content">
+            <!-- SETUP / PROFILE FORM VIEW -->
+            <section id="view-setup" class="view hidden">
+                <div class="card">
+                    <h2>👤 Configura tu Perfil Inicial</h2>
+                    <p class="subtitle">Personaliza tu punto de partida para adaptar la progresión.</p>
+                    <form id="profile-form">
+                        <div class="form-group">
+                            <label for="gender">Género</label>
+                            <select id="gender" required>
+                                <option value="Masculino">Masculino</option>
+                                <option value="Femenino">Femenino</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="age">Edad</label>
+                            <input type="number" id="age" min="15" max="100" value="35" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="height">Altura (cm)</label>
+                            <input type="number" id="height" min="120" max="230" value="175" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="weight">Peso actual (kg)</label>
+                            <input type="number" id="weight" step="0.1" min="30" max="250" value="85.0" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="experience">Nivel de Experiencia</label>
+                            <select id="experience" required>
+                                <option value="Principiante">Principiante (Desde cero / Tiempo sin entrenar)</option>
+                                <option value="Intermedio">Principiante con base</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Guardar y Comenzar</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- HOME DASHBOARD VIEW -->
+            <section id="view-home" class="view">
+                <div class="card week-banner">
+                    <div>
+                        <span class="tag" id="current-phase-tag">Fase 1: Adaptación</span>
+                        <h2 id="home-week-title">Semana 1 de 12</h2>
+                    </div>
+                    <div class="progress-ring-box">
+                        <span class="progress-percent" id="home-progress-text">0%</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>📅 Programa Semanal (4 Días)</h3>
+                    </div>
+                    <div class="days-grid" id="days-grid">
+                        <!-- Dynamic Day Cards -->
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>⚡ Resumen de Rachas</h3>
+                    <div class="stats-row">
+                        <div class="stat-box">
+                            <span class="stat-num" id="stat-sessions">0</span>
+                            <span class="stat-label">Sesiones Totales</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-num" id="stat-streak">0</span>
+                            <span class="stat-label">Racha de Días</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-num" id="stat-weight">--</span>
+                            <span class="stat-label">Peso Actual (kg)</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- WORKOUT DETAILS VIEW -->
+            <section id="view-workout" class="view hidden">
+                <button class="btn-back" id="btn-back-home">← Volver al Panel</button>
+                <div class="card">
+                    <span class="tag" id="workout-day-tag">Día 1</span>
+                    <h2 id="workout-day-title">Quema de Grasa & Core</h2>
+                    <p class="subtitle" id="workout-day-desc">Enfoque en ritmo constante y adaptabilidad.</p>
+
+                    <div class="exercise-list" id="exercise-list">
+                        <!-- Dynamic Exercises -->
+                    </div>
+
+                    <button class="btn btn-primary btn-block mt-20" id="btn-start-guided">
+                        🚀 Comenzar Entrenamiento Guiado
+                    </button>
+                </div>
+            </section>
+
+            <!-- GUIDED WORKOUT TIMER VIEW -->
+            <section id="view-timer" class="view hidden">
+                <div class="timer-card">
+                    <div class="timer-header">
+                        <span id="timer-exercise-num">Ejercicio 1 de 4</span>
+                        <button class="btn-close" id="btn-cancel-timer">✕</button>
+                    </div>
+
+                    <h2 id="timer-ex-title" class="timer-title">Sentadilla libre</h2>
+                    <span id="timer-phase-badge" class="phase-badge phase-prep">PREPARAR</span>
+
+                    <div class="timer-display" id="timer-display">10</div>
+
+                    <div class="timer-instructions" id="timer-instructions">
+                        Prepárate. Posiciona tu cuerpo y respira profundo.
+                    </div>
+
+                    <div class="variant-box" id="timer-variant-box">
+                        <strong>Variante más sencilla:</strong> <span id="timer-variant-text">Sentadilla con apoyo en silla</span>
+                    </div>
+
+                    <div class="timer-controls">
+                        <button class="btn btn-secondary" id="btn-pause-timer">Pausa</button>
+                        <button class="btn btn-primary" id="btn-skip-timer">Siguiente ➔</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PROGRESS & PROFILE VIEW -->
+            <section id="view-progress" class="view hidden">
+                <div class="card">
+                    <h2>📊 Progreso y Evolución</h2>
+                    <p class="subtitle">Evolución de peso y registro de entrenamiento.</p>
+                    
+                    <div class="form-group inline-form">
+                        <input type="number" id="new-weight-input" step="0.1" placeholder="Nuevo peso (kg)">
+                        <button class="btn btn-primary" id="btn-add-weight">Registrar Peso</button>
+                    </div>
+
+                    <h3>Historial de Peso</h3>
+                    <ul class="weight-list" id="weight-list">
+                        <!-- Dynamic Weight Entries -->
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>⚙️ Mi Perfil</h3>
+                    <div id="profile-summary">
+                        <!-- Dynamic Profile Info -->
+                    </div>
+                    <button class="btn btn-danger btn-block mt-20" id="btn-reset-data">
+                        ⚠️ Reiniciar Datos
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- BOTTOM NAVIGATION BAR -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" data-target="view-home">
+                <span class="nav-icon">🏠</span>
+                <span class="nav-label">Inicio</span>
+            </button>
+            <button class="nav-item" data-target="view-progress">
+                <span class="nav-icon">📊</span>
+                <span class="nav-label">Progreso</span>
+            </button>
+        </nav>
     </div>
+
     <script src="app.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js').then(() => {
+                console.log('Service Worker Registrado');
+            }).catch(err => console.log('Error SW:', err));
+        }
+    </script>
 </body>
 </html>
