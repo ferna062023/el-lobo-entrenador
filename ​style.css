@@ -1,0 +1,19 @@
+body {
+    background-color: #121212;
+    color: #FFFFFF;
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+h1 { color: #B22222; }
+button {
+    background-color: #B22222;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-size: 18px;
+}
